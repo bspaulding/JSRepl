@@ -1,14 +1,11 @@
-//
-//  ViewController.swift
-//  JSRepl
-//
-//  Created by Bradley Spaulding on 9/29/16.
-//  Copyright © 2016 Motingo. All rights reserved.
-//
-
 import UIKit
+import JavaScriptCore
 
 class ViewController: UIViewController {
+  @IBOutlet weak var textField: UITextField!
+  @IBOutlet weak var textView: UITextView!
+  
+  let context = JSContext()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -21,5 +18,18 @@ class ViewController: UIViewController {
   }
 
 
+  @IBAction func exec(sender: AnyObject) {
+    let cmd = textField.text!
+    textField.text = ""
+    
+    let value = context?.evaluateScript(cmd)
+    
+    textView.text = textView.text!
+      + "\n> " + cmd
+      + "\n " + value!.toString()
+    
+    textView.scrollRangeToVisible(
+      NSMakeRange(textView.text.characters.count-1, 1))
+  }
 }
 

@@ -9,7 +9,12 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    context?.exceptionHandler = { context, value in
+      if context === self.context, let value = value {
+          self.append(value.toString())
+      }
+    }
   }
 
   override func didReceiveMemoryWarning() {
@@ -18,18 +23,21 @@ class ViewController: UIViewController {
   }
 
 
-  @IBAction func exec(sender: AnyObject) {
+  @IBAction func exec(_ sender: AnyObject) {
     let cmd = textField.text!
     textField.text = ""
     
     let value = context?.evaluateScript(cmd)
     
-    textView.text = textView.text!
-      + "\n> " + cmd
-      + "\n " + value!.toString()
+    append("> " + cmd)
+    append(value!.toString())
     
     textView.scrollRangeToVisible(
       NSMakeRange(textView.text.characters.count-1, 1))
+  }
+  
+  private func append(_ string: String) {
+    textView.text = "\n" + string + textView.text!
   }
 }
 

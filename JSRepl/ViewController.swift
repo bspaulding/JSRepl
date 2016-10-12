@@ -29,8 +29,8 @@ class ViewController: UIViewController {
     
     let value = context?.evaluateScript(cmd)
     
-    append("> " + cmd)
     append(value!.toString())
+    append("> " + cmd)
     
     textView.scrollRangeToVisible(
       NSMakeRange(textView.text.characters.count-1, 1))
